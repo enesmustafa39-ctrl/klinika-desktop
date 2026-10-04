@@ -25,11 +25,11 @@
     "appId": "al.klinika.desktop",
     "productName": "KLINIKA",
     "copyright": "© KLINIKA",
-    "directories": { "output": "dist", "buildResources": "build" },
-    "files": ["main.js", "preload.js", "setup.html", "logo.svg", "package.json"],
+    "directories": { "output": "dist" },
+    "files": ["main.js", "preload.js", "setup.html", "logo.svg", "icon.ico", "package.json"],
     "win": {
       "target": [{ "target": "nsis", "arch": ["x64"] }],
-      "icon": "build/icon.ico",
+      "icon": "icon.ico",
       "artifactName": "KLINIKA-Setup.${ext}"
     },
     "nsis": {
@@ -40,8 +40,8 @@
       "createStartMenuShortcut": true,
       "shortcutName": "KLINIKA",
       "uninstallDisplayName": "KLINIKA",
-      "installerIcon": "build/icon.ico",
-      "uninstallerIcon": "build/icon.ico"
+      "installerIcon": "icon.ico",
+      "uninstallerIcon": "icon.ico"
     },
     "publish": [{ "provider": "github", "releaseType": "release" }]
   }
