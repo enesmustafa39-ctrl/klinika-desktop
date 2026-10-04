@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="sq">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self'; style-src 'unsafe-inline'; script-src 'unsafe-inline'" />
+  <title>KLINIKA – Lidhja me serverin</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e3a5f); color: #0f172a; }
+    .card { background: #fff; width: 440px; max-width: 92vw; border-radius: 18px; padding: 32px; box-shadow: 0 20px 50px rgba(0,0,0,.35); }
+    .brand { display: flex; align-items: center; gap: 12px; justify-content: center; margin-bottom: 10px; }
+    .brand img { width: 52px; height: 52px; } .brand b { font-size: 28px; letter-spacing: .08em; }
+    p { color: #475569; text-align: center; margin: 6px 0 20px; }
+    label { font-size: 13px; font-weight: 600; color: #475569; }
+    input { width: 100%; padding: 11px 12px; margin-top: 6px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 15px; }
+    input:focus { outline: none; border-color: #14b8a6; box-shadow: 0 0 0 3px #ccfbf1; }
+    button { width: 100%; margin-top: 16px; padding: 12px; border: 0; border-radius: 10px; background: #0f766e; color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; }
+    button:hover { background: #115e59; }
+    .err { background: #fef2f2; color: #b91c1c; padding: 10px 12px; border-radius: 10px; font-size: 14px; margin-bottom: 14px; display: none; }
+    .hint { font-size: 12px; color: #64748b; margin-top: 14px; line-height: 1.5; }
+    code { background: #f1f5f9; padding: 1px 5px; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <form class="card" id="f">
+    <div class="brand"><img src="logo.svg" alt="" /><b>KLINIKA</b></div>
+    <p>Shkruani adresën e serverit të klinikës suaj</p>
+    <div class="err" id="err"></div>
+    <label for="url">Adresa e serverit</label>
+    <input id="url" placeholder="p.sh. https://app.klinika.al" autofocus />
+    <button type="submit">Lidhu</button>
+    <div class="hint">
+      Adresën jua jep ofruesi i KLINIKA-s. Shembuj:<br />
+      <code>https://app.klinika.al</code> – server online<br />
+      <code>http://192.168.1.20:8080</code> – server në rrjetin e klinikës<br />
+      <code>http://localhost:5173</code> – provë në këtë kompjuter
+    </div>
+  </form>
+  <script>
+    const q = new URLSearchParams(location.search);
+    const input = document.getElementById('url');
+    const err = document.getElementById('err');
+    input.value = q.get('current') || '';
+    if (q.get('error')) { err.textContent = q.get('error'); err.style.display = 'block'; }
+    document.getElementById('f').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const r = await window.klinikaDesktop.saveServer(input.value);
+      if (!r.ok) { err.textContent = r.error; err.style.display = 'block'; }
+    });
+  </script>
+</body>
+</html>

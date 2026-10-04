@@ -1,0 +1,48 @@
+{
+  "name": "klinika-desktop",
+  "productName": "KLINIKA",
+  "version": "1.0.0",
+  "description": "KLINIKA – menaxhimi i klinikës (aplikacioni për Windows)",
+  "author": "KLINIKA",
+  "license": "UNLICENSED",
+  "main": "main.js",
+  "klinika": {
+    "serverUrl": ""
+  },
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder --win --publish never",
+    "release": "electron-builder --win --publish always"
+  },
+  "dependencies": {
+    "electron-updater": "^6.3.9"
+  },
+  "devDependencies": {
+    "electron": "^33.2.0",
+    "electron-builder": "^25.1.8"
+  },
+  "build": {
+    "appId": "al.klinika.desktop",
+    "productName": "KLINIKA",
+    "copyright": "© KLINIKA",
+    "directories": { "output": "dist", "buildResources": "build" },
+    "files": ["main.js", "preload.js", "setup.html", "logo.svg", "package.json"],
+    "win": {
+      "target": [{ "target": "nsis", "arch": ["x64"] }],
+      "icon": "build/icon.ico",
+      "artifactName": "KLINIKA-Setup.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "KLINIKA",
+      "uninstallDisplayName": "KLINIKA",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico"
+    },
+    "publish": [{ "provider": "github", "releaseType": "release" }]
+  }
+}
