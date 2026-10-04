@@ -39,7 +39,7 @@ function createWindow() {
   win = new BrowserWindow({
     width: 1360, height: 860, minWidth: 1000, minHeight: 640,
     title: 'KLINIKA',
-    icon: path.join(__dirname, 'build', 'icon.ico'),
+    icon: path.join(__dirname, 'icon.ico'),
     backgroundColor: '#0f172a',
     autoHideMenuBar: true,
     show: false,
