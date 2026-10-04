@@ -1,0 +1,47 @@
+name: Ndërto KLINIKA për Windows
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Versioni (p.sh. 1.0.0)'
+        required: true
+        default: '1.0.0'
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Gjej dosjen e desktop-it
+        run: |
+          if [ -f package.json ] && grep -q '"electron"' package.json; then D="."; elif [ -f desktop/package.json ]; then D="desktop"; elif [ -f klinika/desktop/package.json ]; then D="klinika/desktop"; else echo "Nuk u gjet package.json i desktop-it" && exit 1; fi
+          echo "DIR=$D" >> $GITHUB_ENV
+          echo "Dosja: $D"
+
+      - name: Vendos versionin
+        run: |
+          cd "$DIR"
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then V="${{ github.event.inputs.version }}"; else V="${GITHUB_REF_NAME#v}"; fi
+          npm version "$V" --no-git-tag-version --allow-same-version
+
+      - name: Instalo paketat
+        run: cd "$DIR" && npm install
+
+      - name: Ndërto dhe publiko KLINIKA-Setup.exe
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: cd "$DIR" && npx electron-builder --win --publish always
